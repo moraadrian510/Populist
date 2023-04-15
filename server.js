@@ -1,38 +1,32 @@
-const { MongoClient } = require("mongodb");
 const express = require("express");
-const dbConnection = require("./config/connection");
-const routes = require("./routes");
+const { MongoClient } = require("mongodb");
 
-const PORT = 3001;
-const app = express();
-
-// Connection string to local instance of MongoDB
+const PORT = process.env.PORT || 3000;
 const connectionStringURI = "mongodb://127.0.0.1:27017";
-
-// Initialize a new instance of MongoClient
-const client = new MongoClient(connectionStringURI);
-
-//Variable that hold database name
 const dbName = "populistDB";
 
-// Use connect method to connect to the mongo server
-client
-  .connect()
-  .then(() => {
+const app = express();
+
+app.use(express.json());
+
+
+//routes to check if db is working properly---------
+app.get("/", (req, res) => {
+  res.send("Hello, world!");
+});
+
+// Connect to MongoDB and start server
+MongoClient.connect(connectionStringURI, { useUnifiedTopology: true })
+  .then((client) => {
     console.log("Connected successfully to MongoDB");
-    // Use client.db() constructor to add new db instance
     const db = client.db(dbName);
-
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
-    app.use(routes);
-
-    // start up express server
+    app.locals.db = db;
     app.listen(PORT, () => {
-      console.log(`Example app listening at http://localhost:${PORT}`);
+      console.log(`Server listening on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("Mongo connection error: ", err.message);
+    console.error("Error connecting to MongoDB:", err.message);
+    process.exit(1);
   });
 
