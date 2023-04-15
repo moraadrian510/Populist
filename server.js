@@ -23,6 +23,10 @@ client
     // Use client.db() constructor to add new db instance
     const db = client.db(dbName);
 
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+    app.use(routes);
+
     // start up express server
     app.listen(PORT, () => {
       console.log(`Example app listening at http://localhost:${PORT}`);
@@ -31,14 +35,4 @@ client
   .catch((err) => {
     console.error("Mongo connection error: ", err.message);
   });
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(routes);
-
-dbConnection.once("open", () => {
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-  });
-});
 
