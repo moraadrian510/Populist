@@ -14,6 +14,10 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
+// Test if db is working------
+app.put("/", (req, res) => {
+  res.send("put route")
+})
 
 // Connect to MongoDB and start server
 MongoClient.connect(connectionStringURI, { useUnifiedTopology: true })
