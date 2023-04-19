@@ -4,9 +4,11 @@ const { ObjectId } = require("mongoose").Types;
 module.exports = {
   //get all users with their thoughts
 getUsers(req, res) {
+    console.log("getUsers")
     User.find()
     .populate("thoughts")
     .then((users) => {
+        console.log("users")
         res.json(users);
     })
     .catch((err) => {
@@ -16,14 +18,14 @@ getUsers(req, res) {
   },
   // get a single user
   getSingleUser(req, res) {
+    console.log(req.params.userId)
     User.findOne({ _id: req.params.userId })
     .populate("thoughts")
-    .then(async (users) => {
+    .then((users) => {
+        console.log(users)
         !users
         ? res.status(404).json({ message: "User not found with that ID" })
-        : res.json({
-            message: "User found",
-            });
+        : res.json(users);
     })
     .catch((err) => {
         console.log(err);

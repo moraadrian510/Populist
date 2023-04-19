@@ -29,6 +29,6 @@ thoughtSchema.pre('remove', function(next){
     );
 });
 
-const Thoughts = model('thoughts', thoughtSchema);
+const Thoughts = model('Thought', thoughtSchema);
 
 module.exports = Thoughts;

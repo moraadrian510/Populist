@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const User = require('./models/user');
-const Thought = require('./models/thought');
+const User = require('../models/user');
+const Thought = require('../models/Thoughts');
 
 mongoose.connect('mongodb://localhost/thoughts', {
   useNewUrlParser: true,
