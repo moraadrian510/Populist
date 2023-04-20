@@ -13,3 +13,13 @@ router.route('/').get(getThoughts).post(createThought);
 router.route('/:thoughtsId').get(getSingleThought).delete(removeThought);
 
 module.exports = router;
+
+
+
+
+// /api/users/:userId/thoughts
+// router.route('/:userId/thoughts')
+// .post(addThought);
+
+// api/users/:userId/thoughts/:thoughtsId
+// router.route('/:userId/thoughts/:thoughtsId').delete(removeThought);//add to thoughts list
