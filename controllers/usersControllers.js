@@ -38,4 +38,10 @@ getUsers(req, res) {
     .then((user) => res.json(user))
     .catch((err) => res.status(500).json(err));
   },
+  // Delete user
+  deleteUser(req, res) {
+    User.findOneAndRemove({ _id: req.params.userId })
+    .then((user) => res.json(user))
+    .catch((err) => res.status(500).json(err));
+  },
 };
