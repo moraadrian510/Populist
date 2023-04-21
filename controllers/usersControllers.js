@@ -7,7 +7,7 @@ module.exports = {
 getUsers(req, res) {
     console.log("getUsers")
     User.find()
-    .populate("thoughts")
+    .populate("thoughts")// a---------------Question
     .then((users) => {
         console.log("users")
         res.json(users);
@@ -75,16 +75,17 @@ getUsers(req, res) {
   removeFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friends: { friendsId: req.params.friendsId } } },
+      { $pull:  { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
-    .then((user) =>
-    !user
+    .then((user) =>{
+    
+      return !user
       ? res 
         .status(404)
         .json( { message: "No friends with that ID found in profile"})
       : res.json(user)
-    )
+    })
     .catch((err) => res.status(500).json(err))
   }
 };

@@ -11,10 +11,8 @@ router.route('/').get(getThoughts).post(createThought);
 
 // /api/thoughts/:thoughtsId
 router.route('/:thoughtsId').get(getSingleThought).delete(removeThought);
-
+//update
 module.exports = router;
-
-
 
 
 // /api/users/:userId/thoughts
