@@ -1,6 +1,5 @@
 const { User, Thoughts } = require("../models");
 const { findOneAndUpdate } = require("../models/Thoughts");
-const user = require("../models/user");
 const { ObjectId } = require("mongoose").Types;
 
 module.exports = {
@@ -60,7 +59,7 @@ getUsers(req, res) {
   addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { friends: req.body} },
+      { $addToSet: { friends:  req.params.friendId } },
       { runValidators: true, new: true }
     )
     .then((User) =>
@@ -68,7 +67,7 @@ getUsers(req, res) {
       ? res
         .status(404)
         .json({ message: "No user with that ID found In DB"})
-        : res.json(user)
+        : res.json(User)
     )
     .catch((err) => res.status(500).json(err));
   },
