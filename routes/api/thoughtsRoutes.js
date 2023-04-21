@@ -14,6 +14,7 @@ router.route('/:thoughtsId').get(getSingleThought).delete(removeThought);
 //update
 module.exports = router;
 
+//use this path for thoughts
 
 // /api/users/:userId/thoughts
 // router.route('/:userId/thoughts')
