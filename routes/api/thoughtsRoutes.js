@@ -4,22 +4,17 @@ const {
     getThoughts,
     getSingleThought,
     removeThought,
+    updateThought,
 } = require('../../controllers/thoughtsControllers');
 
-// api/thoughts
-router.route('/').get(getThoughts).post(createThought);
+router.route('/users/:userId/thoughts')
+  .get(getThoughts)
+  .post(createThought);
 
-// /api/thoughts/:thoughtsId
-router.route('/:thoughtsId').get(getSingleThought).delete(removeThought);
-//update
+router.route('/users/:userId/thoughts/:thoughtId')
+  .get(getSingleThought)
+  .put(updateThought)
+  .delete(removeThought);
 
 module.exports = router;
 
-//use this path for thoughts
-
-// /api/users/:userId/thoughts
-// router.route('/:userId/thoughts')
-// .post(addThought);
-
-// api/users/:userId/thoughts/:thoughtsId
-// router.route('/:userId/thoughts/:thoughtsId').delete(removeThought);//add to thoughts list

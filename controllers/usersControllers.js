@@ -1,6 +1,6 @@
-const { User, Thoughts } = require("../models");
-const { findOneAndUpdate } = require("../models/Thoughts");
-const { ObjectId } = require("mongoose").Types;
+const { User } = require("../models");
+// const { findOneAndUpdate } = require("../models/Thoughts");
+// const { ObjectId } = require("mongoose").Types;
 
 module.exports = {
   //get all users with their thoughts
