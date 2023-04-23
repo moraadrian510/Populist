@@ -22,7 +22,7 @@ const thoughtSchema = new Schema(
     ref: 'User',
     required: true,
     },
-    reactions: [reactionSchema],
+    // reactions: [reactionSchema],
 
 }, 
 { timestamps: true ,
