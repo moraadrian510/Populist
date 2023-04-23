@@ -15,6 +15,7 @@ module.exports = {
     Thoughts.findById({ _id: req.params.thoughtsId })
     //   .populate("reaction")
       .then((thoughts) => {
+        console.log(thoughts,"thoughts")
         console.log(thoughts);
         res.json(thoughts);
       })

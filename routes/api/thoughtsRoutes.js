@@ -7,11 +7,13 @@ const {
     updateThought,
 } = require('../../controllers/thoughtsControllers');
 
+// api/thoughts/:userId
 router.route('/:userId')
   .get(getThoughts)
   .post(createThought);
 
-router.route('/users/:userId/thoughts/:thoughtsId')
+// api/thoughts/:userId/:thoughtsId
+router.route('/:userId/:thoughtsId')
   .get(getSingleThought)
   .put(updateThought)
   .delete(removeThought);
