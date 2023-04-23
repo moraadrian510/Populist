@@ -25,9 +25,10 @@ module.exports = {
   createThought(req, res) {
     Thoughts.create(req.body)
       .then((thoughts) => {
+        console.log(thoughts, "thoughts");
         return User.findOneAndUpdate(
-          { _id: req.params.UserId },
-          { $addToSet: { thoughts: req.params.thoughtsId } },
+          { _id: req.params.userId },
+          { $addToSet: { thoughts: req.params._id } },
           { new: true }
         );
       })

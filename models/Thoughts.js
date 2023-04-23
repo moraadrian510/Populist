@@ -31,9 +31,9 @@ const thoughtsSchema = new Schema(
     }
 });
 
-thoughtsSchema.virtual('reactionCount').get(function() {
-    return this.reactions.length;
-})
+// thoughtsSchema.virtual('reactionCount').get(function() {
+//     return this.reactions.length;
+// })
 
 //cascade effect to delete thoughts when user is deleted
 thoughtsSchema.pre('remove', function(next){
