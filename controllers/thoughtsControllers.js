@@ -2,15 +2,17 @@ const { Thoughts, User } = require("../models");
 
 
 module.exports = {
-  //get all thoughts
   getThoughts(req, res) {
-    Thoughts.find({ userName: req.params.userId })
-      .then((thoughts) => res.json(thoughts))
+    User.findById(req.params.userId)
+      .populate("thoughts")
+      .then((user) => {
+        res.json(user.thoughts);
+      })
       .catch((err) => res.status(500).json(err));
-},
+  },
   // get a single thought
   getSingleThought(req, res) {
-    Thoughts.findOne({ _id: req.params.thoughtsId })
+    Thoughts.findById({ _id: req.params.thoughtsId })
     //   .populate("reaction")
       .then((thoughts) => {
         console.log(thoughts);
