@@ -7,7 +7,7 @@ const {
     updateThought,
 } = require('../../controllers/thoughtsControllers');
 
-router.route('/:userId/thoughts')
+router.route('/:userId')
   .get(getThoughts)
   .post(createThought);
 
@@ -17,4 +17,7 @@ router.route('/users/:userId/thoughts/:thoughtsId')
   .delete(removeThought);
 
 module.exports = router;
+
+
+
 
