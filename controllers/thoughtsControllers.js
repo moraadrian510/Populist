@@ -1,17 +1,17 @@
-const { Thought, User } = require("../models");
+const { Thoughts, User } = require("../models");
 
 
 module.exports = {
   //get all thoughts
   getThoughts(req, res) {
-    Thought.find()
+    Thoughts.find()
       .then((thoughts) => res.json(thoughts))
       .catch((err) => res.status(500).json(err));
   },
   // get a single thought
   getSingleThought(req, res) {
-    Thought.findOne({ _id: req.params.thoughtsId })
-      .populate("reaction")
+    Thoughts.findOne({ _id: req.params.thoughtsId })
+    //   .populate("reaction")
       .then((thoughts) => {
         console.log(thoughts);
         res.json(thoughts);
@@ -23,7 +23,7 @@ module.exports = {
   },
   //create a new thought
   createThought(req, res) {
-    Thought.create(req.body)
+    Thoughts.create(req.body)
       .then((thoughts) => {
         return User.findOneAndUpdate(
           { _id: req.body.UserId },
@@ -31,8 +31,8 @@ module.exports = {
           { new: true }
         );
       })
-      .then((thought) => {
-        !thought
+      .then((thoughts) => {
+        !thoughts
           ? res.status(404).json({
               message: "Thought created , but no user with that id found",
             })
@@ -44,17 +44,17 @@ module.exports = {
   },
   //update user thought
   updateThought(req, res) {
-    Thought.updateOne(
+    Thoughts.updateOne(
       { _id: req.params.thoughtsId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
-      .then((thought) => res.json(thought))
+      .then((thoughts) => res.json(thoughts))
       .catch((err) => res.status(err));
   },
   // remove thought
   removeThought(req, res) {
-    Thought.findOneAndRemove({ _id: req.params.thoughtsId })
+    Thoughts.findOneAndRemove({ _id: req.params.thoughtsId })
       .then((thoughts) =>
         !thoughts
           ? res
@@ -66,8 +66,8 @@ module.exports = {
               { new: true }
             )
       )
-      .then((thought) =>
-        !thought
+      .then((thoughts) =>
+        !thoughts
           ? res.status(404).json({
               message: "Thouht not found",
             })

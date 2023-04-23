@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 
-const thoughtSchema = new Schema(
+const thoughtsSchema = new Schema(
 {
     thoughtText: {
         type:  String,
@@ -31,12 +31,12 @@ const thoughtSchema = new Schema(
     }
 });
 
-thoughtSchema.virtual('reactionCount').get(function() {
+thoughtsSchema.virtual('reactionCount').get(function() {
     return this.reactions.length;
 })
 
 //cascade effect to delete thoughts when user is deleted
-thoughtSchema.pre('remove', function(next){
+thoughtsSchema.pre('remove', function(next){
     this.model('User').updateOne(
         { thoughts: this._id },
         { $pull: { thoughts: this._id } },
@@ -45,6 +45,6 @@ thoughtSchema.pre('remove', function(next){
     );
 });
 
-const Thought = model('thought', thoughtSchema);
+const Thoughts = model('Thoughts', thoughtsSchema);
 
-module.exports = Thought;
+module.exports = Thoughts;
