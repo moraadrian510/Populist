@@ -28,7 +28,7 @@ module.exports = {
         console.log(thoughts, "thoughts");
         return User.findOneAndUpdate(
           { _id: req.params.userId },
-          { $addToSet: { thoughts: req.params._id } },
+          { $addToSet: { thoughts: thoughts._id } },
           { new: true }
         );
       })
