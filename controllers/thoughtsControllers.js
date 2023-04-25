@@ -1,6 +1,5 @@
 const { Thought, User } = require("../models");
 
-
 module.exports = {
   getThoughts(req, res) {
     User.findById(req.params.userId)
@@ -13,9 +12,9 @@ module.exports = {
   // get a single thought
   getSingleThought(req, res) {
     Thought.findById({ _id: req.params.thoughtsId })
-    //   .populate("reaction")
+      //   .populate("reaction")
       .then((thoughts) => {
-        console.log(thoughts,"thoughts")
+        console.log(thoughts, "thoughts");
         console.log(thoughts);
         res.json(thoughts);
       })
@@ -82,35 +81,35 @@ module.exports = {
   // create reaction
   createReaction(req, res) {
     Thought.findOneAndUpdate(
-        { _id: req.params.thoughtsId },
-        { $addToSet: { reactions: req.body} },
-        { new: true }
+      { _id: req.params.thoughtsId },
+      { $addToSet: { reactions: req.body } },
+      { new: true }
     )
-    .then((reactions) => {
-    !reactions
-        ? reactions.status(404).json({
-            message: "Reaction created , but thougt Id not found",
-        })
-        : res.json("Reaction created 🎉");
-    })
-    .catch((eer) => {
-    res.status(500).json(err);
-    });
-},
-// delete reaction
-deleteReaction(req, res) {
+      .then((reactions) => {
+        !reactions
+          ? reactions.status(404).json({
+              message: "Reaction created , but thougt Id not found",
+            })
+          : res.json("Reaction created 🎉");
+      })
+      .catch((eer) => {
+        res.status(500).json(err);
+      });
+  },
+  // delete reaction
+  deleteReaction(req, res) {
     Thought.findOneAndUpdate(
-        { _id: req.params.thoughtId },
-        { $pull: { reactions: req.params.reactionsId } },
-        { new: true }
-        )
-.then((reactions) =>
-    !reactions
-        ? res.status(404).json({
-            message: "Reaction not found",
-        })
-    : res.json({ message: "Reaction  was successfully removed!" })
-)
-    .catch((err) => res.status(500).json(err));
-},
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: req.params.reactionsId } },
+      { new: true }
+    )
+      .then((reactions) =>
+        !reactions
+          ? res.status(404).json({
+              message: "Reaction not found",
+            })
+          : res.json({ message: "Reaction  was successfully removed!" })
+      )
+      .catch((err) => res.status(500).json(err));
+  },
 };
