@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
 const reactionSchema = require('./Reaction');
+const moment = require('moment');
 
+//import reaction schema
 const thoughtsSchema = new Schema(
 {
     thoughtText: {
@@ -13,8 +15,8 @@ const thoughtsSchema = new Schema(
         type: Date,
         default: Date.now,
         get: function (createdAt) {
-            // formast the time stamp to a more readable string
-            return new Date(createdAt).toDateString();
+             // Format the timestamp using Moment.js
+        return moment(createdAt).format('MMMM Do YYYY, h:mm:ss a'); // check if woorks!!!
         }
     },
     userName: {
@@ -28,7 +30,8 @@ const thoughtsSchema = new Schema(
 { timestamps: true ,
     toJSON: {
         virtuals: true,
-    }
+    },
+    id: false,
 });
 
 thoughtsSchema.virtual('reactionCount').get(function() {
@@ -45,6 +48,8 @@ thoughtsSchema.pre('remove', function(next){
     );
 });
 
-const Thoughts = model('Thoughts', thoughtsSchema);
+const Thought = model('Thought', thoughtsSchema);
 
-module.exports = Thoughts;
+module.exports = Thought;
+
+//global serach

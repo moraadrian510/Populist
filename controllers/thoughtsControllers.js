@@ -1,4 +1,4 @@
-const { Thoughts, User } = require("../models");
+const { Thought, User } = require("../models");
 
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
   },
   // get a single thought
   getSingleThought(req, res) {
-    Thoughts.findById({ _id: req.params.thoughtsId })
+    Thought.findById({ _id: req.params.thoughtsId })
     //   .populate("reaction")
       .then((thoughts) => {
         console.log(thoughts,"thoughts")
@@ -26,7 +26,7 @@ module.exports = {
   },
   //create a new thought
   createThought(req, res) {
-    Thoughts.create(req.body)
+    Thought.create(req.body)
       .then((thoughts) => {
         console.log(thoughts, "thoughts");
         return User.findOneAndUpdate(
@@ -48,7 +48,7 @@ module.exports = {
   },
   //update user thought
   updateThought(req, res) {
-    Thoughts.updateOne(
+    Thought.updateOne(
       { _id: req.params.thoughtsId },
       { $set: req.body },
       { runValidators: true, new: true }
@@ -58,7 +58,7 @@ module.exports = {
   },
   // remove thought
   removeThought(req, res) {
-    Thoughts.findOneAndRemove({ _id: req.params.thoughtsId })
+    Thought.findOneAndRemove({ _id: req.params.thoughtsId })
       .then((thoughts) =>
         !thoughts
           ? res
@@ -79,4 +79,38 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // create reaction
+  createReaction(req, res) {
+    Thought.findOneAndUpdate(
+        { _id: req.params.thoughtsId },
+        { $addToSet: { reactions: req.body} },
+        { new: true }
+    )
+    .then((reactions) => {
+    !reactions
+        ? reactions.status(404).json({
+            message: "Reaction created , but thougt Id not found",
+        })
+        : res.json("Reaction created 🎉");
+    })
+    .catch((eer) => {
+    res.status(500).json(err);
+    });
+},
+// delete reaction
+deleteReaction(req, res) {
+    Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: req.params.reactionsId } },
+        { new: true }
+        )
+.then((reactions) =>
+    !reactions
+        ? res.status(404).json({
+            message: "Reaction not found",
+        })
+    : res.json({ message: "Reaction  was successfully removed!" })
+)
+    .catch((err) => res.status(500).json(err));
+},
 };
