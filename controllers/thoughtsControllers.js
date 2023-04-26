@@ -3,7 +3,7 @@ const { Thought, User} = require("../models");
 module.exports = {
 
   getThoughts(req, res) {
-    Thought.find({req,body})
+    Thought.find(req.body)
     .populate({
       path: "reactions",
       select: "-__v",
@@ -13,8 +13,8 @@ module.exports = {
   },
   // get a single thought
   getSingleThought(req, res) {
-    Thought.findById({ _id: req.params.thoughtId })
-      //   .populate("reaction")
+    Thought.findById({ _id: req.params.thoughtsId })
+        .populate("reactions")
       .then((thought) => {
         console.log(thought, "thought");
         console.log(thought);
@@ -49,8 +49,9 @@ module.exports = {
   },
   //update user thought
   updateThought(req, res) {
+    console.log('thought')
     Thought.updateOne(
-      { _id: req.params.thoughtId },
+      { _id: req.params.thoughtsId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
@@ -59,14 +60,14 @@ module.exports = {
   },
   // remove thought
   removeThought(req, res) {
-    Thought.findOneAndRemove({ _id: req.params.thoughtId })
+    Thought.findOneAndRemove({ _id: req.params.thoughtsId })
       .then((thought) =>
         !thought
           ? res
               .status(404)
               .json({ message: "No thought with this ID was found" })
           : User.findOneAndUpdate(
-              { thoughts: req.params.thoughtId },
+              { thoughts: req.params.thoughtsId },
               { $pull: { thoughts: req.params.thoughtId } },
               { new: true }
             )
@@ -74,7 +75,7 @@ module.exports = {
       .then((thought) =>
         !thought
           ? res.status(404).json({
-              message: "Thouht not found",
+              message: "Thought not found",
             })
           : res.json({ message: "Thought was successfully removed!" })
       )
@@ -90,11 +91,11 @@ module.exports = {
       .then((reactions) => {
         !reactions
           ? reactions.status(404).json({
-              message: "Reaction created , but thougt Id not found",
+              message: "Reaction created , but thought Id not found",
             })
           : res.json("Reaction created 🎉");
       })
-      .catch((eer) => {
+      .catch((err) => {
         res.status(500).json(err);
       });
   },

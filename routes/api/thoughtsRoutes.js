@@ -20,7 +20,7 @@ router.route('/:thoughtsId')
   .put(updateThought)
   .delete(removeThought);
 
-  //reaction paths
+  // api/thoughtsId/reactions
   router.route('/:thoughtsId/reactions')
   .post(createReaction);
   
