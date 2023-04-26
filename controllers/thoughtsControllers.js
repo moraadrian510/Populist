@@ -3,7 +3,11 @@ const { Thought, User} = require("../models");
 module.exports = {
 
   getThoughts(req, res) {
-    Thought.find(req.body)
+    Thought.find({req,body})
+    .populate({
+      path: "reactions",
+      select: "-__v",
+    })
     .then((thoughts) => res.json(thoughts))
     .catch((err) => res.status(500).json(err));
   },
@@ -27,8 +31,8 @@ module.exports = {
       .then((thought) => {
         console.log(thought, "thought");
         return User.findOneAndUpdate(
-          { _id: req.params.userId },
-          { $addToSet: { thoughts: thoughts._id } },
+          { _id: req.body.userId },
+          { $addToSet: { thoughts: thought._id } },
           { new: true }
         );
       })
