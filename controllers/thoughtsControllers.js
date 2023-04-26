@@ -1,22 +1,22 @@
-const { Thought, User } = require("../models");
+const { Thought, User} = require("../models");
 
 module.exports = {
   getThoughts(req, res) {
     User.findById(req.params.userId)
       .populate("thoughts")
       .then((user) => {
-        res.json(user.thoughts);
+        res.json(user.thought);
       })
       .catch((err) => res.status(500).json(err));
   },
   // get a single thought
   getSingleThought(req, res) {
-    Thought.findById({ _id: req.params.thoughtsId })
+    Thought.findById({ _id: req.params.thoughtId })
       //   .populate("reaction")
-      .then((thoughts) => {
-        console.log(thoughts, "thoughts");
-        console.log(thoughts);
-        res.json(thoughts);
+      .then((thought) => {
+        console.log(thought, "thought");
+        console.log(thought);
+        res.json(thought);
       })
       .catch((err) => {
         console.log(err);
@@ -26,16 +26,16 @@ module.exports = {
   //create a new thought
   createThought(req, res) {
     Thought.create(req.body)
-      .then((thoughts) => {
-        console.log(thoughts, "thoughts");
+      .then((thought) => {
+        console.log(thought, "thought");
         return User.findOneAndUpdate(
           { _id: req.params.userId },
           { $addToSet: { thoughts: thoughts._id } },
           { new: true }
         );
       })
-      .then((thoughts) => {
-        !thoughts
+      .then((thought) => {
+        !thought
           ? res.status(404).json({
               message: "Thought created , but no user with that id found",
             })
@@ -48,29 +48,29 @@ module.exports = {
   //update user thought
   updateThought(req, res) {
     Thought.updateOne(
-      { _id: req.params.thoughtsId },
+      { _id: req.params.thoughtId },
       { $set: req.body },
       { runValidators: true, new: true }
     )
-      .then((thoughts) => res.json(thoughts))
+      .then((thought) => res.json(thought))
       .catch((err) => res.status(err));
   },
   // remove thought
   removeThought(req, res) {
-    Thought.findOneAndRemove({ _id: req.params.thoughtsId })
-      .then((thoughts) =>
-        !thoughts
+    Thought.findOneAndRemove({ _id: req.params.thoughtId })
+      .then((thought) =>
+        !thought
           ? res
               .status(404)
               .json({ message: "No thought with this ID was found" })
           : User.findOneAndUpdate(
-              { thoughts: req.params.thoughtsId },
-              { $pull: { thoughts: req.params.thoughtsId } },
+              { thoughts: req.params.thoughtId },
+              { $pull: { thoughts: req.params.thoughtId } },
               { new: true }
             )
       )
-      .then((thoughts) =>
-        !thoughts
+      .then((thought) =>
+        !thought
           ? res.status(404).json({
               message: "Thouht not found",
             })
@@ -81,7 +81,7 @@ module.exports = {
   // create reaction
   createReaction(req, res) {
     Thought.findOneAndUpdate(
-      { _id: req.params.thoughtsId },
+      { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
       { new: true }
     )

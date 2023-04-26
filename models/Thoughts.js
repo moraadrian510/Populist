@@ -16,7 +16,7 @@ const thoughtsSchema = new Schema(
         default: Date.now,
         get: function (createdAt) {
              // Format the timestamp using Moment.js
-        return moment(createdAt).format('MMMM Do YYYY, h:mm:ss a'); // check if woorks!!!
+        return moment(createdAt).format('MMMM Do YYYY, h:mm:ss a');
         }
     },
     userName: {
@@ -52,4 +52,3 @@ const Thought = model('Thought', thoughtsSchema);
 
 module.exports = Thought;
 
-//global serach
