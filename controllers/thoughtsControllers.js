@@ -99,7 +99,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
-  // delete reaction
+  // delete reaction 1
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtsId },
